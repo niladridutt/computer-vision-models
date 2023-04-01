@@ -16,7 +16,7 @@ import warnings
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 # Train MaskRCNN on a single class from MS COCO
-CAT_ID = 44  # Object category ID from MS COCO
+CAT_ID = 58  # Object category ID from MS COCO, 58=hot dog
 
 
 def get_model_instance_segmentation(num_classes):

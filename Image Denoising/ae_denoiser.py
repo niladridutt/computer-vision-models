@@ -16,10 +16,10 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
 class LoadDenoisingDataset(Dataset):
-    def __init__(self, input_imgs_path, cleaned_imgs_path):
+    def __init__(self, input_imgs_path, target_imgs_path):
         super().__init__()
         self.input_imgs_path = list(input_imgs_path.glob('*.*'))
-        self.target_imgs_path = list(cleaned_imgs_path.glob('*.*'))
+        self.target_imgs_path = list(target_imgs_path.glob('*.*'))
         self.transform = transforms.Compose([
             transforms.ToTensor()
         ])
@@ -96,14 +96,14 @@ def train():
     encoder.train()
     decoder.train()
     BATCH_SIZE = 32
-    docs_loader = torch.utils.data.DataLoader(
+    data_loader = torch.utils.data.DataLoader(
         dataset,
         batch_size=BATCH_SIZE,
         shuffle=True
     )
     for i in range(MAX_ITERATIONS):
         total_loss = 0
-        for input_images, target_images in docs_loader:
+        for input_images, target_images in data_loader:
             output_images = decoder(encoder(input_images))
             loss = loss_function(target_images, output_images)
             encoder_optimizer.zero_grad()

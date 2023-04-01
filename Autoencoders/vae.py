@@ -149,12 +149,10 @@ def train():
 
         celeba_hq_vae.eval()
         with torch.no_grad():
-
-            with torch.no_grad():
-                for input_images in torch_validation_celeba_hq:
-                    decoded_images, mu, std = celeba_hq_vae(input_images)
-                    loss = reconstruction_loss(input_images, decoded_images)
-                    total_val_loss += loss.item()
+            for input_images in torch_validation_celeba_hq:
+                decoded_images, mu, std = celeba_hq_vae(input_images)
+                loss = reconstruction_loss(input_images, decoded_images)
+                total_val_loss += loss.item()
 
         liveloss.update(
             {

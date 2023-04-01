@@ -116,17 +116,16 @@ def train():
             {'train loss': total_train_loss.cpu().detach().numpy()})
         liveloss.send()
 
-        if i % 10 == 0:
-            celeba_hq_autoencoder.eval()
-            total_val_loss = 0
-            with torch.no_grad():
-                for input_images in torch_validation_celeba_hq:
-                    output_images = celeba_hq_autoencoder(input_images)
-                    loss = reconstruction_loss(input_images, output_images)
-                    total_val_loss += loss.detach()
-            liveloss.update(
-                {'val loss': total_val_loss.cpu().detach().numpy()})
-            liveloss.send()
+        celeba_hq_autoencoder.eval()
+        total_val_loss = 0
+        with torch.no_grad():
+            for input_images in torch_validation_celeba_hq:
+                output_images = celeba_hq_autoencoder(input_images)
+                loss = reconstruction_loss(input_images, output_images)
+                total_val_loss += loss.detach()
+        liveloss.update(
+            {'val loss': total_val_loss.cpu().detach().numpy()})
+        liveloss.send()
 
 
 if __name__ == '__main__':
